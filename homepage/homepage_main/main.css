@@ -19,13 +19,13 @@
 /* HERO SECTION */
 .hero-section {
   position:relative;
-  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./pic/nen.png');
   background-size: cover; background-position: center;
   height: 80vh; display: flex; align-items: center; justify-content: center;
   text-align: center; color: white;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./img/nen.png');
 }
 .hero-content{
-  display: inline-block;
+  display: block;
   position:relative;
   width:50%;
   left:5vh;
