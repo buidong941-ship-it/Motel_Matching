@@ -1,39 +1,9 @@
-// Hàm đóng/mở menu tài khoản
-function toggleUserMenu(event) {
-    // Ngăn chặn sự kiện click lan ra ngoài
-    event.stopPropagation(); 
-    const dropdown = document.getElementById("userDropdown");
-    dropdown.classList.toggle("show");
-}
-
-// Hàm xử lý đăng xuất
-function logout() {
-    // Xóa thông tin đăng nhập (nếu dùng localStorage)
-    localStorage.removeItem("userId");
-    localStorage.removeItem("username");
-    
-    // Chuyển hướng về trang chủ lúc chưa đăng nhập
-    window.location.href = "homepage.html"; 
-}
-
-// Click ra ngoài thì tự động đóng menu
-window.onclick = function(event) {
-    // Đóng dropdown user
-    if (!event.target.closest('.user-profile')) {
-        document.getElementById("userDropdown")?.classList.remove('show');
-    }
-    // Đóng panel thông báo
-    if (!event.target.closest('.action-icon')) {
-        document.getElementById("notificationPanel")?.classList.remove('show');
-    }
-}
-
 // Mở/đóng panel thông báo 
 function toggleNotification(event) {
     event.stopPropagation();
     const panel = document.getElementById("notificationPanel");
     panel.classList.toggle("show");
-    
+
     if (panel.classList.contains("show")) {
         loadNotifications(); // gọi API khi mở
     }
@@ -87,11 +57,3 @@ async function markAllRead() {
     loadNotifications();
 }
 
-// Format thời gian kiểu "2 phút trước"
-function timeAgo(dateStr) {
-    const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
-    if (diff < 60) return `${diff} giây trước`;
-    if (diff < 3600) return `${Math.floor(diff/60)} phút trước`;
-    if (diff < 86400) return `${Math.floor(diff/3600)} giờ trước`;
-    return `${Math.floor(diff/86400)} ngày trước`;
-}

@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4D_Trọ.vn - Nền tảng tìm bạn ở ghép</title>
-    <link rel="stylesheet" href="./user.css"> 
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="./css/hero.css">
+    <link rel="stylesheet" href="./css/search.css">
+    <link rel="stylesheet" href="./css/posts.css">
+    <link rel="stylesheet" href="./css/notification.css">
+    <link rel="stylesheet" href="./css/message.css">
 </head>
+
 <body>
 
     <header class="navbar">
         <div class="logo">4D_Trọ.vn</div>
-        
+
         <div class="user-logged-in">
-    
+
             <div class="action-icon" title="Tin nhắn">
                 <img src="./img/tin_nhan.png" height="30px">
                 <span class="notification-badge">0</span>
             </div>
-            
+
             <div class="action-icon" title="Thông báo" onclick="toggleNotification(event)">
                 <img src="./img/thong_bao.png" height="30px">
                 <span class="notification-badge" id="notif-badge">0</span>
@@ -28,13 +36,13 @@
                     </div>
                     <div class="notif-list" id="notif-list"></div>
                 </div>
-            </div>                          <!-- ← đóng action-icon thông báo -->
-            
+            </div> <!-- ← đóng action-icon thông báo -->
+
             <div class="user-profile" onclick="toggleUserMenu(event)">
                 <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar-img">
                 <span class="user-name" id="displayUsername">Thành Đồng</span>
                 <span class="dropdown-arrow">▼</span>
-                
+
                 <div class="dropdown-menu" id="userDropdown">
                     <a href="#">👤 Tài khoản của tôi</a>
                     <a href="#">📝 Các bài đã đăng</a>
@@ -51,7 +59,7 @@
             <p>Kết nối hàng ngàn phòng trọ và những người bạn cùng phòng lý tưởng</p>
         </div>
     </section>
-    
+
     <section class="search-section">
         <div class="search-box">
             <select class="filter-select" id="postTypeFilter">
@@ -60,7 +68,8 @@
                 <option value="find_roommate">Tìm người ở ghép</option>
                 <option value="find_room">Tìm phòng</option>
             </select>
-            <input type="text" id="searchInput" placeholder="Nhập khu vực (VD: Quận 7, Bình Thạnh...)" class="search-input" />
+            <input type="text" id="searchInput" placeholder="Nhập khu vực (VD: Quận 7, Bình Thạnh...)"
+                class="search-input" />
             <select class="filter-select" id="priceFilter">
                 <option value="">Mức giá</option>
                 <option value="<2m">Dưới 2 triệu</option>
@@ -74,9 +83,15 @@
     <section class="recent-posts-section">
         <h2>Bài đăng mới nhất</h2>
         <div class="post-grid" id="post-grid">
-            </div>
+        </div>
     </section>
 
-    <script src="./user.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/notification.js"></script>
+    <script src="./js/message.js"></script>
+    <script src="./js/search.js"></script>
+    <script src="./js/app.js"></script>
 </body>
+
 </html>

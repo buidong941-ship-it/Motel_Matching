@@ -1,0 +1,78 @@
+/* DANH SÁCH BÀI ĐĂNG */
+.recent-posts-section {
+    padding: 50px 10%;
+}
+
+.recent-posts-section h2 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.post-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+}
+
+.post-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.post-info {
+    padding: 15px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.badge.rent_out {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge.find_roommate {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.badge.find_room {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.post-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.post-price {
+    color: #d32f2f;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.post-address {
+    color: #666;
+    font-size: 13px;
+}

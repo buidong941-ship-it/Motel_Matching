@@ -1,0 +1,48 @@
+/* HERO SECTION */
+.hero-section {
+    position: relative;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../img/nen.png');
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.hero-content {
+    width: 50%;
+    left: 5vh;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+}
+
+/* xếp nghiêng */
+.coder:nth-child(1) {
+    transform: rotate(0deg) translateX(0);
+    z-index: 4;
+}
+
+.coder:nth-child(2) {
+    transform: rotate(4deg) translateX(40px);
+    z-index: 3;
+}
+
+.coder:nth-child(3) {
+    transform: rotate(8deg) translateX(80px);
+    z-index: 2;
+}
+
+.coder:nth-child(4) {
+    transform: rotate(12deg) translateX(120px);
+    z-index: 1;
+}

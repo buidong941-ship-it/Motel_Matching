@@ -5,16 +5,10 @@ const cors = require('cors');
 
 const app = express();
 const port = 3000;
+const pool = require('./db');
 
 app.use(cors());
 app.use(express.json());
-
-const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'phongtro'
-}; 
  
 // --- API ĐĂNG NHẬP ---
 app.post('/api/login', async (req, res) => {
@@ -26,12 +20,12 @@ app.post('/api/login', async (req, res) => {
     }
 
     try {
-        const connection = await mysql.createConnection(dbConfig);
-        const [rows] = await connection.execute(
+        // const connection = await mysql.createConnection(dbConfig);
+        const [rows] = await pool.execute(
             'SELECT id, login_name, password, role FROM Users WHERE login_name = ?',
             [username]
         );
-        await connection.end();
+        await pool.end();
 
         if (rows.length === 0) {
             return res.status(401).json({ error: "Tài khoản không tồn tại!" });
@@ -69,26 +63,26 @@ app.post('/api/forgot-password', async (req, res) => {
     }
 
     try {
-        const connection = await mysql.createConnection(dbConfig);
-        const [rows] = await connection.execute(
+        // const connection = await mysql.createConnection(dbConfig);
+        const [rows] = await pool.execute(
             'SELECT id FROM Users WHERE login_name = ? AND email = ? AND phone = ?',
             [username, email, phone]
         );
 
         if (rows.length === 0) {
-            await connection.end();
+            await pool.end();
             return res.status(404).json({ error: "Thông tin xác minh không chính xác!" });
         }
 
-        const saltRounds = 10;
+        const saltRounds = 10; 
         const hashedPassword = await bcrypt.hash(new_password, saltRounds);
 
         // Update vào cột password
-        await connection.execute(
+        await pool.execute(
             'UPDATE Users SET password = ? WHERE login_name = ? AND email = ? AND phone = ?',
             [hashedPassword, username, email, phone]
         );
-        await connection.end();
+        await pool.end();
 
         res.status(200).json({ message: "Đổi mật khẩu thành công! Hãy đăng nhập bằng mật khẩu mới." });
 
@@ -108,16 +102,16 @@ app.post('/api/register', async (req, res) => {
     }
 
     try {
-        const connection = await mysql.createConnection(dbConfig);
+        // const connection = await mysql.createConnection(dbConfig);
         
         // Kiểm tra xem tên đăng nhập HOẶC email đã tồn tại chưa
-        const [existingUsers] = await connection.execute(
+        const [existingUsers] = await pool.execute(
             'SELECT id FROM Users WHERE login_name = ? OR email = ?',
             [username, email]
         );
 
         if (existingUsers.length > 0) {
-            await connection.end();
+            await pool.end();
             return res.status(409).json({ error: "Tên đăng nhập hoặc Email này đã có người sử dụng!" });
         }
 
@@ -125,14 +119,14 @@ app.post('/api/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         // Lưu bản ghi chuẩn
-        await connection.execute(
+        await pool.execute(
             'INSERT INTO Users (fullname, login_name, email, password, phone, CCCD, birthday) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [fullname, username, email, hashedPassword, phone, CCCD, birthday]
         );
         
         // (Đã loại bỏ INSERT INTO User_Preferences dư thừa của base cũ)
         
-        await connection.end();
+        await pool.end();
 
         res.status(201).json({ message: "Đăng ký tài khoản thành công!" });
 
@@ -142,14 +136,18 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// THÊM POOL — dùng chung cho toàn app
-const pool = mysql.createPool(dbConfig);
-module.exports = pool; // ← để notifications.js dùng được
-
 // MOUNT ROUTE — đặt TRƯỚC app.listen
 const notificationRoutes = require('./routes/notifications');
 app.use('/api/notifications', notificationRoutes);
 
 app.listen(port, () => {
     console.log(`Server Node.js đang chạy tại http://127.0.0.1:${port}`);
+});
+
+process.on('SIGINT', async () => {
+    console.log('Đang shutdown...');
+
+    await pool.end(); // đóng MySQL pool
+
+    process.exit(0);
 });
