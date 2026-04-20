@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../index'); 
+const db = require('../db'); 
 
 // GET /api/notifications?user_id=5
 // Lấy 20 thông báo mới nhất của user

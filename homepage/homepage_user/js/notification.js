@@ -35,9 +35,8 @@ async function loadNotifications() {
             </div>
         `).join('');
 
-        // Cập nhật badge
-        const unread = data.filter(n => !n.is_read).length;
-        document.getElementById("notif-badge").textContent = unread || '0';
+        // Cập nhật badge chính xác từ API
+        await loadUnreadCount();
 
     } catch (err) {
         list.innerHTML = `<div class="notif-empty">Lỗi tải thông báo</div>`;
@@ -57,3 +56,22 @@ async function markAllRead() {
     loadNotifications();
 }
 
+// Gọi API đếm số thông báo chưa đọc (chính xác, không bị giới hạn bởi LIMIT 20)
+async function loadUnreadCount() {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    try {
+        const res = await fetch(`/api/notifications/unread-count?user_id=${userId}`);
+        const data = await res.json();
+        const badge = document.getElementById("notif-badge");
+        badge.textContent = data.count || '0';
+    } catch (err) {
+        console.error("Lỗi đếm thông báo chưa đọc:", err);
+    }
+}
+
+// Tự động load badge khi mở trang
+document.addEventListener("DOMContentLoaded", () => {
+    loadUnreadCount();
+});
