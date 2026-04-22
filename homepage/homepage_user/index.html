@@ -21,56 +21,59 @@
 
         <div class="user-logged-in">
 
-            <div class="action-icon" title="Tin nhắn">
+            <div class="action-icon" title="Tin nhắn" onclick="toggleMessagePanel(event)">
                 <img src="./img/tin_nhan.png" height="30px">
-                <span class="notification-badge">0</span>
-                <div class="message-panel" id="messagePanel">
-                    <div class="message-header">
+                <span class="notification-badge" id="message-badge">2</span>
+                
+                <div class="notification-panel" id="messagePanel">
+                    <div class="notif-header">
+                        <span>Chat</span>
+                        <span class="mark-all">Đánh dấu đọc hết</span>
+                    </div>
+                    <div class="notif-list" id="conversation-list">
+                        </div>
+                </div>
+            </div>
+
+            </div>
+
+
+        <div class="message-popup" id="messagePopup">
+            <div class="message-header">
+                <div class="message-title">
+                    <img src="" alt="Avatar" id="chatAvatar">
+                    <div class="message-user-info">
+                        <span class="message-name" id="chatName">Đang tải...</span>
+                        <span class="message-status">Đang hoạt động</span>
+                    </div>
+                </div>
+                <button class="message-close" onclick="closeChatPopup()">×</button>
+            </div>
+            
+            <div class="message-body" id="messageBody">
+                </div>
+
+            <div class="message-footer">
+                <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." onkeypress="handleEnterMessage(event)">
+                <button class="message-btn-send" onclick="sendNewMessage()">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+            <div class="action-icon" title="Thông báo" onclick="toggleNotification(event)">
+                <img src="./img/thong_bao.png" height="30px">
+                <span class="notification-badge" id="notif-badge">0</span>
+                <div class="notification-panel" id="notificationPanel">
+                    <div class="notif-header">
                         <span>Thông báo</span>
                         <span onclick="markAllRead()" class="mark-all">Đánh dấu đọc hết</span>
                     </div>
-                    <div class="mess-list" id="mess-list"></div>
+                    <div class="notif-list" id="notif-list"></div>
                 </div>
-            </div>
-
-            <div class="action-icon" title="Tin nhắn" onclick="toggleMessagePopup()">
-                <img src="./img/tin_nhan.png" height="30px">
-                <span class="notification-badge">2</span>
-            </div>
-
-            <div class="message-popup" id="messagePopup">
-                <div class="message-header">
-                    <div class="message-title">
-                        <img src="https://via.placeholder.com/30" alt="Avatar">
-                        <div class="message-user-info">
-                            <span class="message-name">Trần Cảnh (Chủ trọ)</span>
-                            <span class="message-status">Đang hoạt động</span>
-                        </div>
-                    </div>
-                    <button class="message-close" onclick="toggleMessagePopup()">×</button>
-                </div>
-
-                <div class="message-body" id="messageBody">
-                    <div class="message received">
-                        <p>Chào bạn, phòng trọ ở Quận 7 còn không ạ?</p>
-                        <span class="time">10:00 AM</span>
-                    </div>
-                    <div class="message sent">
-                        <p>Chào bạn, phòng vẫn còn nhé. Bạn muốn qua xem lúc nào?</p>
-                        <span class="time">10:05 AM</span>
-                    </div>
-                </div>
-
-                <div class="message-footer">
-                    <input type="text" id="messageInput" placeholder="Nhập tin nhắn..."
-                        onkeypress="handleEnterMessage(event)">
-                    <button class="message-btn-send" onclick="sendNewMessage()">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div><!-- ← đóng action-icon thông báo -->
+            </div> 
 
             <div class="user-profile" onclick="toggleUserMenu(event)">
                 <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar-img">
