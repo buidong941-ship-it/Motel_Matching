@@ -1,3 +1,183 @@
-/* ===== MESSAGE - Khung tin nhắn ===== */
+/* message.css */
 
-/* TODO: Thêm CSS cho khung chat / tin nhắn */
+/* Khung popup cố định */
+.message-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 340px;
+    height: 480px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(120%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1000;
+}
+
+.message-popup.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Header */
+.message-header {
+    background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.message-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.message-title img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.message-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.message-status {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.message-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.2s;
+}
+
+.message-close:hover {
+    transform: scale(1.2);
+}
+
+/* Body chứa tin nhắn */
+.message-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background-color: #f4f7f6;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Từng dòng tin nhắn */
+.message {
+    max-width: 75%;
+    padding: 10px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.message p {
+    margin: 0;
+}
+
+.message .time {
+    font-size: 10px;
+    margin-top: 4px;
+    display: block;
+}
+
+.message.received {
+    background-color: #ffffff;
+    color: #333;
+    align-self: flex-start;
+    border-radius: 18px 18px 18px 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.message.received .time {
+    color: #999;
+    text-align: left;
+}
+
+.message.sent {
+    background-color: #ff7e5f;
+    color: white;
+    align-self: flex-end;
+    border-radius: 18px 18px 4px 18px;
+    box-shadow: 0 1px 2px rgba(255, 126, 95, 0.3);
+}
+
+.message.sent .time {
+    color: rgba(255, 255, 255, 0.8);
+    text-align: right;
+}
+
+/* Footer (nhập tin nhắn) */
+.message-footer {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #fff;
+    border-top: 1px solid #eaeaea;
+    gap: 10px;
+}
+
+.message-footer input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: #f9f9f9;
+}
+
+.message-footer input:focus {
+    border-color: #ff7e5f;
+    box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.1);
+    background-color: #fff;
+}
+
+.message-btn-send {
+    background: #ff7e5f;
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.message-btn-send:hover {
+    transform: scale(1.05);
+    background: #e66a4d;
+}
