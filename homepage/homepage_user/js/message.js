@@ -1,44 +1,40 @@
-// Biến toàn cục để nhớ xem đang chat với ai trong Popup
-let currentActiveContactId = null; 
+// Biến toàn cục
+let currentActiveContactId = null;
+let currentContactName = null; // ← thêm để không phải lấy lại từ DOM
 
 // ==========================================
 // 1. XỬ LÝ DROPDOWN DANH SÁCH HỘI THOẠI
 // ==========================================
 
-// Mở/đóng panel danh sách tin nhắn từ Header
 function toggleMessagePanel(event) {
     event.stopPropagation();
-    
-    // Đóng panel notification nếu đang mở để khỏi đè nhau
+
     const notifPanel = document.getElementById("notificationPanel");
     if (notifPanel && notifPanel.classList.contains("show")) {
         notifPanel.classList.remove("show");
-    }
+    } 
 
     const panel = document.getElementById("messagePanel");
     panel.classList.toggle("show");
 
     if (panel.classList.contains("show")) {
-        loadConversations(); 
+        loadConversations();
     }
 }
 
-// Lấy danh sách những người đã nhắn tin với mình
 async function loadConversations() {
     const userId = localStorage.getItem("userId");
     const list = document.getElementById("conversation-list");
 
     try {
-        // Gọi API lấy danh sách cuộc trò chuyện (Dựa theo bảng Conversations)
         const res = await fetch(`/api/conversations?user_id=${userId}`);
-        const data = await res.json(); // Data giả lập
+        const data = await res.json();
 
         if (data.length === 0) {
             list.innerHTML = `<div class="notif-empty">Chưa có cuộc trò chuyện nào</div>`;
             return;
         }
 
-        // Render danh sách
         list.innerHTML = data.map(conv => `
             <div class="conversation-item ${conv.unread_count > 0 ? 'unread' : ''}" 
                  onclick="openChatPopup(event, ${conv.contact_id}, '${conv.contact_name}', '${conv.contact_avatar}')">
@@ -51,9 +47,7 @@ async function loadConversations() {
         `).join('');
 
     } catch (err) {
-        list.innerHTML = `<div class="notif-empty">Bắt đầu trò chuyện với mọi người!</div>`;
-        
-        // MOCK DATA ĐỂ BẠN TEST GIAO DIỆN KHI CHƯA CÓ API:
+        // FIX 1: Bỏ dòng list.innerHTML đầu tiên, chỉ render mock data 1 lần
         list.innerHTML = `
             <div class="conversation-item unread" onclick="openChatPopup(event, 2, 'Trần Cảnh (Chủ trọ)', 'https://via.placeholder.com/48')">
                 <img class="conversation-avatar" src="https://via.placeholder.com/48" />
@@ -77,79 +71,75 @@ async function loadConversations() {
 // 2. XỬ LÝ POPUP CHAT Ở GÓC MÀN HÌNH
 // ==========================================
 
-// Click vào 1 hội thoại -> Mở khung chat góc dưới
 function openChatPopup(event, contactId, contactName, contactAvatar) {
-    event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài làm đóng menu
-    
-    // Đóng dropdown panel
+    event.stopPropagation();
+
     document.getElementById("messagePanel").classList.remove("show");
 
-    // Cập nhật thông tin UI của Popup
     currentActiveContactId = contactId;
+    currentContactName = contactName; // FIX 2: lưu tên vào biến thay vì đọc lại từ DOM
+
     document.getElementById("chatName").textContent = contactName;
     document.getElementById("chatAvatar").src = contactAvatar || 'https://via.placeholder.com/30';
 
-    // Hiển thị khung chat
     const popup = document.getElementById("messagePopup");
     popup.classList.add("show");
-    
-    // Gọi API lấy tin nhắn chi tiết
+
     loadMessagesForContact(contactId);
-    
-    // Focus vào ô chat
+
     document.getElementById("messageInput").focus();
 }
 
-// Nút X đóng khung chat
 function closeChatPopup() {
     document.getElementById("messagePopup").classList.remove("show");
-    currentActiveContactId = null; // Reset
+    currentActiveContactId = null;
+    currentContactName = null;
 }
 
-// Tải chi tiết tin nhắn của 1 cuộc hội thoại
 async function loadMessagesForContact(contactId) {
     const userId = localStorage.getItem("userId");
     const body = document.getElementById("messageBody");
-    body.innerHTML = ''; // Clear tin nhắn cũ
+    body.innerHTML = '';
 
     try {
         const res = await fetch(`/api/messages?user_id=${userId}&contact_id=${contactId}`);
         const data = await res.json();
+        // render data...
 
-        // Render y như logic cũ của bạn...
     } catch (err) {
-        // UI Mẫu khi chưa có API
+        // FIX 2: dùng currentContactName thay vì đọc lại từ DOM
         body.innerHTML = `
             <div class="message received">
-                <p>Tin nhắn test từ ${document.getElementById("chatName").textContent}</p>
-                <span class="time">10:00 AM</span>
+                <p>Tin nhắn test từ ${currentContactName}</p>
+                <span class="time">10:00</span>
             </div>
         `;
     }
     scrollMessageToBottom();
 }
 
-// Gửi tin nhắn mới
 async function sendNewMessage() {
-    if (!currentActiveContactId) return; // Nếu chưa mở chat với ai thì ko gửi
-    
+    if (!currentActiveContactId) return;
+
     const input = document.getElementById("messageInput");
     const text = input.value.trim();
     if (text === "") return;
 
-    // Hiển thị tin nhắn gửi đi
     const body = document.getElementById("messageBody");
     const msgDiv = document.createElement("div");
-    msgDiv.className = "message sent"; 
-    
+    msgDiv.className = "message sent";
+
+    // FIX 3: padStart để tránh "9:5" → "09:05"
     const now = new Date();
-    msgDiv.innerHTML = `<p>${text}</p><span class="time">${now.getHours()}:${now.getMinutes()}</span>`;
-    
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    msgDiv.innerHTML = `<p>${text}</p><span class="time">${h}:${m}</span>`;
+
     body.appendChild(msgDiv);
-    input.value = ""; 
+    input.value = "";
     scrollMessageToBottom();
 
-    // Gọi API lưu vào DB bảng Messages...
+    // Gọi API lưu vào DB...
 }
 
 // ==========================================
@@ -168,18 +158,40 @@ function scrollMessageToBottom() {
     body.scrollTop = body.scrollHeight;
 }
 
-// Ẩn panel khi click ra ngoài
-document.addEventListener("click", function(event) {
+document.addEventListener("click", function (event) {
     const msgPanel = document.getElementById("messagePanel");
     const notifPanel = document.getElementById("notificationPanel");
 
-    // Click ra ngoài panel tin nhắn thì đóng
     if (msgPanel && msgPanel.classList.contains("show") && !event.target.closest('.action-icon[title="Tin nhắn"]')) {
         msgPanel.classList.remove("show");
     }
 
-    // Click ra ngoài panel thông báo thì đóng
     if (notifPanel && notifPanel.classList.contains("show") && !event.target.closest('.action-icon[title="Thông báo"]')) {
         notifPanel.classList.remove("show");
+    }
+});
+
+
+// MESSAGE POPUP
+function toggleAvatarMenu(event) {
+    event.stopPropagation();
+    const menu = document.getElementById("avatarMenu");
+    menu.classList.toggle("show");
+}
+
+function viewFullChat() {
+    // Truyền contactId sang chat.html qua URL
+    window.location.href = `./chat.html?contact_id=${currentActiveContactId}&name=${encodeURIComponent(currentContactName)}`;
+}
+
+function viewProfile() {
+    window.location.href = `./profile.html?user_id=${currentActiveContactId}`;
+}
+
+// Đóng menu khi click ra ngoài — thêm vào document click listener có sẵn
+document.addEventListener("click", function(event) {
+    const avatarMenu = document.getElementById("avatarMenu");
+    if (avatarMenu && avatarMenu.classList.contains("show") && !event.target.closest(".chat-avatar-wrapper")) {
+        avatarMenu.classList.remove("show");
     }
 });

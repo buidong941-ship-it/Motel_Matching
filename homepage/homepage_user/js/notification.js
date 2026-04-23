@@ -1,6 +1,12 @@
 // Mở/đóng panel thông báo 
 function toggleNotification(event) {
     event.stopPropagation();
+
+    const messfPanel = document.getElementById("messagePanel");
+    if (messfPanel && messfPanel.classList.contains("show")) {
+        messfPanel.classList.remove("show");
+    } 
+
     const panel = document.getElementById("notificationPanel");
     panel.classList.toggle("show");
 
