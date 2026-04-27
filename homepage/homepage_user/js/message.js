@@ -191,7 +191,7 @@ function viewProfile() {
 // Đóng menu khi click ra ngoài — thêm vào document click listener có sẵn
 document.addEventListener("click", function(event) {
     const avatarMenu = document.getElementById("avatarMenu");
-    if (avatarMenu && avatarMenu.classList.contains("show") && !event.target.closest(".chat-avatar-wrapper")) {
+    if (avatarMenu && avatarMenu.classList.contains("show") && !event.target.closest(".chat-avatar-container")) {
         avatarMenu.classList.remove("show");
     }
 });
