@@ -1,0 +1,19 @@
+this app is limited at pc website
+the flow will be FE -> middle (currently not) -> backend -> db
+
+basic knowledge that I learned:
+
+- async = “hàm này có thể chạy các tác vụ mất thời gian (gọi API, đọc DB,…) mà không làm đứng chương trình”
+- Hàm async luôn trả về một Promise
+-> it usually going with await and to use await, it must be in a async function
+Promise: dùng để xử lí bất đồng bộ trong hệ thống bởi vì js là đơn luồng xử lí nên để tránh việc đóng băng UI người dùng thì ta sử dụng callback() (hiểu đơn giản là hàm lồng hàm) -> tuy nhiên khi có quá nhiều calllback thì sẽ xảy ra callback hell
+->Promise ra đời để viết code song song dễ nhìn hơn bằng then().
+REFERENCES: https://developer.okta.com/blog/2019/01/16/history-and-future-of-async-javascript#:~:text=The%20setTimeout()%20function%20takes,making%20database%20requests%20to%20MongoDB.
+
+
+
+login.js:
+here will be the place for setting localStorage reused after somewhere in the code
+message.js:
+backend is not currently using middle ware -> need update
+bc this way can be rewritten by the user -> dangerous
