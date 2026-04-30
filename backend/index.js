@@ -10,6 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // ===== MOUNT ROUTES =====
+const authRoutes = require('./routes/auth');
+const notificationRoutes = require('./routes/notification');
 const messageRoutes = require('./routes/message');
 
 app.use('/api', authRoutes);                        // /api/login, /api/register

@@ -149,10 +149,6 @@ async function openConversation(conversationId) {
     document.getElementById('messagesArea').style.display = 'block';
     document.getElementById('chatInputBar').style.display = 'flex';
 
-    // Mobile: ẩn sidebar, hiện panel
-    document.getElementById('chatSidebar').classList.add('hidden');
-    document.getElementById('chatPanel').classList.add('active');
-
     // Set header info
     if (conv && conv.other_participant) {
         document.getElementById('chatContactName').textContent = conv.other_participant.fullname || 'Người dùng';
@@ -419,22 +415,6 @@ function openLightbox(imageUrl) {
     document.body.appendChild(overlay);
 }
 
-// ── MOBILE: BACK TO SIDEBAR ──
-function backToSidebar() {
-    currentConversationId = null;
-    stopPolling();
-
-    document.getElementById('chatSidebar').classList.remove('hidden');
-    document.getElementById('chatPanel').classList.remove('active');
-
-    document.getElementById('chatEmptyState').style.display = 'flex';
-    document.getElementById('chatHeader').style.display = 'none';
-    document.getElementById('messagesArea').style.display = 'none';
-    document.getElementById('chatInputBar').style.display = 'none';
-
-    loadConversations();
-}
-
 // ── NAVBAR FUNCTIONS ──
 function toggleUserMenu(event) {
     event.stopPropagation();
@@ -507,3 +487,4 @@ function formatDateShort(dateStr) {
     const d = new Date(dateStr);
     return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
 }
+

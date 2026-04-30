@@ -17,13 +17,24 @@
     <header class="navbar">
         <div class="logo" onclick="window.location.href='./index.html'" style="cursor:pointer;">4D_Trọ.vn</div>
         <div class="user-logged-in">
+
             <div class="action-icon" title="Tin nhắn" style="position:relative;">
                 <img src="./img/tin_nhan.png" height="30px" style="filter: brightness(0) invert(1);">
                 <span class="notification-badge" id="msg-badge">0</span>
             </div>
-            <div class="action-icon" title="Thông báo" onclick="window.location.href='./homepage_user.html'">
+
+            <div class="action-icon" title="Thông báo" onclick="toggleNotification(event)">
                 <img src="./img/thong_bao.png" height="30px">
+                <span class="notification-badge" id="notif-badge">0</span>
+                <div class="notification-panel" id="notificationPanel">
+                    <div class="notif-header">
+                        <span>Thông báo</span>
+                        <span onclick="markAllRead()" class="mark-all">Đánh dấu đọc hết</span>
+                    </div>
+                    <div class="notif-list" id="notif-list"></div>
+                </div>
             </div>
+
             <div class="user-profile" onclick="toggleUserMenu(event)">
                 <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar-img" id="userAvatar">
                 <span class="user-name" id="displayUsername">User</span>
@@ -35,6 +46,7 @@
                     <a href="#" onclick="logout()" class="logout-text">🚪 Đăng xuất</a>
                 </div>
             </div>
+
         </div>
     </header>
 

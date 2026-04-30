@@ -17,24 +17,23 @@
 <body>
 
     <header class="navbar">
-        <div class="logo">4D_Trọ.vn</div>
-
+        <div class="logo" onclick="window.location.href='./index.html'" style="cursor:pointer;">4D_Trọ.vn</div>
         <div class="user-logged-in">
 
             <div class="action-icon" title="Tin nhắn" onclick="toggleMessagePanel(event)">
                 <img src="./img/tin_nhan.png" height="30px">
                 <span class="notification-badge" id="message-badge">2</span>
-                
+
                 <div class="notification-panel" id="messagePanel">
                     <div class="notif-header">
                         <span>Chat</span>
                         <span class="mark-all">Đánh dấu đọc hết</span>
                     </div>
                     <div class="mess-list" id="conversation-list">
-                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="action-icon" title="Thông báo" onclick="toggleNotification(event)">
                 <img src="./img/thong_bao.png" height="30px">
                 <span class="notification-badge" id="notif-badge">0</span>
@@ -45,7 +44,7 @@
                     </div>
                     <div class="notif-list" id="notif-list"></div>
                 </div>
-            </div> 
+            </div>
 
             <div class="user-profile" onclick="toggleUserMenu(event)">
                 <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar-img">
@@ -82,14 +81,15 @@
                     <button class="message-close" onclick="closeChatPopup()">×</button>
                 </div>
 
-                
+
             </div>
-            
+
             <div class="message-body" id="messageBody">
-                </div>
+            </div>
 
             <div class="message-footer">
-                <input type="text" id="messageInput" placeholder="Nhập tin nhắn..." onkeypress="handleEnterMessage(event)">
+                <input type="text" id="messageInput" placeholder="Nhập tin nhắn..."
+                    onkeypress="handleEnterMessage(event)">
                 <button class="message-btn-send" onclick="sendNewMessage()">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
@@ -98,7 +98,7 @@
             </div>
         </div>
 
-            
+
         </div>
     </header>
 
