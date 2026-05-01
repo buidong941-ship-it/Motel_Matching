@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết bài đăng - 4D_Trọ.vn</title>
+    <meta name="description" content="Xem chi tiết bài đăng phòng trọ, tìm người ở ghép trên 4D_Trọ.vn">
+
+    <!-- Styles dùng chung -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="./css/notification.css">
+    <link rel="stylesheet" href="./css/message.css">
+
+    <!-- Style riêng trang này -->
+    <link rel="stylesheet" href="./css/posts_detail.css">
+</head>
+
+<body>
+
+    <!-- ╔══════════════════════════════════════════╗ -->
+    <!-- ║   NAVBAR - giữ nguyên từ index.html      ║ -->
+    <!-- ╚══════════════════════════════════════════╝ -->
+    <header class="navbar">
+        <div class="logo" onclick="window.location.href='./index.html'" style="cursor:pointer;">4D_Trọ.vn</div>
+        <div class="user-logged-in">
+
+            <!-- Tin nhắn -->
+            <div class="action-icon" title="Tin nhắn" onclick="toggleMessagePanel(event)">
+                <img src="./img/tin_nhan.png" height="30px">
+                <span class="notification-badge" id="message-badge">0</span>
+
+                <div class="notification-panel" id="messagePanel">
+                    <div class="notif-header">
+                        <span>Chat</span>
+                        <span class="mark-all">Đánh dấu đọc hết</span>
+                    </div>
+                    <div class="mess-list" id="conversation-list"></div>
+                </div>
+            </div>
+
+            <!-- Thông báo -->
+            <div class="action-icon" title="Thông báo" onclick="toggleNotification(event)">
+                <img src="./img/thong_bao.png" height="30px">
+                <span class="notification-badge" id="notif-badge">0</span>
+                <div class="notification-panel" id="notificationPanel">
+                    <div class="notif-header">
+                        <span>Thông báo</span>
+                        <span onclick="markAllRead()" class="mark-all">Đánh dấu đọc hết</span>
+                    </div>
+                    <div class="notif-list" id="notif-list"></div>
+                </div>
+            </div>
+
+            <!-- User profile -->
+            <div class="user-profile" onclick="toggleUserMenu(event)">
+                <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar-img">
+                <span class="user-name" id="displayUsername">Tài khoản</span>
+                <span class="dropdown-arrow">▼</span>
+
+                <div class="dropdown-menu" id="userDropdown">
+                    <a href="#">👤 Tài khoản của tôi</a>
+                    <a href="#">📝 Các bài đã đăng</a>
+                    <hr>
+                    <a href="#" onclick="logout()" class="logout-text">🚪 Đăng xuất</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── Message popup (giống index.html) ── -->
+        <div class="message-popup" id="messagePopup">
+            <div class="message-header">
+                <div class="message-title">
+                    <div class="chat-avatar-container">
+                        <div class="chat-avatar-wrapper">
+                            <img src="" alt="Avatar" id="chatAvatar" onclick="toggleAvatarMenu(event)">
+                        </div>
+                        <div class="avatar-menu" id="avatarMenu">
+                            <div class="avatar-menu-item" onclick="viewFullChat()">💬 Xem cuộc trò chuyện</div>
+                            <div class="avatar-menu-item" onclick="viewProfile()">👤 Xem trang cá nhân</div>
+                        </div>
+                    </div>
+                    <div class="message-user-info">
+                        <span class="message-name" id="chatName">Đang tải...</span>
+                        <span class="message-status">Đang hoạt động</span>
+                    </div>
+                    <button class="message-close" onclick="closeChatPopup()">×</button>
+                </div>
+            </div>
+
+            <div class="message-body" id="messageBody"></div>
+
+            <div class="message-footer">
+                <input type="text" id="messageInput" placeholder="Nhập tin nhắn..."
+                    onkeypress="handleEnterMessage(event)">
+                <button class="message-btn-send" onclick="sendNewMessage()">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </header>
+    <!-- ─── end navbar ─── -->
+
+    <main class="detail-wrapper">
+
+        <!-- Trạng thái đang tải -->
+        <p class="loading-state" id="loading-state">⏳ Đang tải bài đăng...</p>
+
+        <!-- Layout 2 cột: nội dung chính | sidebar tác giả -->
+        <div id="detail-layout" style="display:none;">
+
+            <!-- ── Gallery ảnh ── -->
+            <section class="gallery-section" id="gallery-section">
+                <img id="gallery-main" class="gallery-main" src="" alt="Ảnh bài đăng">
+                <button class="gallery-nav prev" id="gallery-prev" onclick="prevSlide()">&#8592;</button>
+                <button class="gallery-nav next" id="gallery-next" onclick="nextSlide()">&#8594;</button>
+                <div class="gallery-dots" id="gallery-dots"></div>
+            </section>
+
+            <!-- Layout 2 cột -->
+            <div class="detail-layout">
+
+                <!-- ── CỘT TRÁI: thông tin bài ── -->
+                <div>
+                    <article class="detail-card">
+                        <!-- Badge loại -->
+                        <span class="detail-badge" id="detail-badge"></span>
+
+                        <!-- Tiêu đề -->
+                        <h1 class="detail-title" id="detail-title"></h1>
+                        <p class="detail-date" id="detail-date"></p>
+
+                        <!-- Lưới thông tin nhanh -->
+                        <div class="detail-info-grid">
+                            <!-- Phòng trọ -->
+                            <div class="info-chip" id="chip-wrap-price">
+                                <span class="chip-label">💰 Giá thuê</span>
+                                <span class="chip-value price" id="chip-price">—</span>
+                            </div>
+                            <div class="info-chip" id="chip-wrap-area">
+                                <span class="chip-label">📐 Diện tích</span>
+                                <span class="chip-value" id="chip-area">—</span>
+                            </div>
+                            <div class="info-chip" id="chip-wrap-status">
+                                <span class="chip-label">🏠 Tình trạng</span>
+                                <span class="chip-value" id="chip-status">—</span>
+                            </div>
+                            <div class="info-chip" id="chip-wrap-district">
+                                <span class="chip-label">🗺️ Quận / Huyện</span>
+                                <span class="chip-value" id="chip-district">—</span>
+                            </div>
+
+                            <!-- Tìm người ở ghép -->
+                            <div class="info-chip" id="chip-wrap-budget">
+                                <span class="chip-label">💸 Ngân sách</span>
+                                <span class="chip-value price" id="chip-budget">—</span>
+                            </div>
+                            <div class="info-chip" id="chip-wrap-gender">
+                                <span class="chip-label">👤 Giới tính</span>
+                                <span class="chip-value" id="chip-gender">—</span>
+                            </div>
+
+                            <!-- Dùng chung -->
+                            <div class="info-chip">
+                                <span class="chip-label">📍 Địa chỉ</span>
+                                <span class="chip-value" id="chip-address">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Mô tả -->
+                        <p class="detail-content-label">📄 Mô tả chi tiết</p>
+                        <p class="detail-content-text" id="detail-content-text"></p>
+                    </article>
+                </div>
+                <!-- ── end cột trái ── -->
+
+                <!-- ── CỘT PHẢI: sidebar tác giả ── -->
+                <aside class="detail-sidebar">
+                    <div class="author-card">
+                        <img id="author-avatar" class="author-avatar" src="https://via.placeholder.com/64" alt="Avatar">
+                        <p class="author-name" id="author-name">—</p>
+                        <p class="author-phone" id="author-phone">—</p>
+                        <button id="btn-contact" class="btn-contact" onclick="contactOwner()">
+                            💬 Liên hệ ngay
+                        </button>
+                    </div>
+                </aside>
+                <!-- ── end sidebar ── -->
+
+            </div>
+            <!-- ── end detail-layout ── -->
+
+            <!-- ── BÌNH LUẬN ── -->
+            <section class="comments-section">
+                <h2 class="comments-title">
+                    Bình luận
+                    <span class="comments-count" id="comments-count">0</span>
+                </h2>
+
+                <!-- Form nhập bình luận -->
+                <div class="comment-form">
+                    <img class="comment-form-avatar" src="https://via.placeholder.com/38" alt="Bạn" id="my-avatar">
+                    <div class="comment-input-wrap">
+                        <textarea id="comment-textarea" class="comment-textarea"
+                            placeholder="Viết bình luận của bạn..."></textarea>
+                        <button class="btn-comment-submit" onclick="submitComment()">Gửi</button>
+                    </div>
+                </div>
+
+                <hr class="comments-divider">
+
+                <!-- Danh sách bình luận -->
+                <div class="comment-list" id="comment-list">
+                    <p class="comments-empty">Đang tải bình luận...</p>
+                </div>
+            </section>
+
+        </div>
+        <!-- ── end detail-layout wrapper ── -->
+
+    </main>
+
+
+    <!-- Scripts dùng chung -->
+    <script src="./js/utils.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/notification.js"></script>
+    <script src="./js/message.js"></script>
+
+    <!-- Script riêng trang này -->
+    <script src="./js/posts_detail.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,402 @@
+/* ========================================================
+   POSTS_DETAIL.CSS - Trang chi tiết bài đăng
+   Navbar kế thừa từ navbar.css
+   ======================================================== */
+
+/* ── Body & nền ── */
+body {
+    background-color: #f0f2f5;
+    min-height: 100vh;
+}
+
+/* ── Wrapper chính (bên dưới navbar) ── */
+.detail-wrapper {
+    max-width: 960px;
+    margin: 30px auto 60px;
+    padding: 0 16px;
+}
+
+/* ── Loading & lỗi ── */
+.loading-state,
+.error-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: #888;
+    font-size: 16px;
+}
+.error-state { color: #e53935; }
+
+/* ──────────────────────────────────────────────────────
+   GALLERY - slide ảnh
+   ────────────────────────────────────────────────────── */
+.gallery-section {
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.gallery-main {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+    z-index: 5;
+}
+.gallery-nav:hover { background: #fff; }
+.gallery-nav.prev { left: 14px; }
+.gallery-nav.next { right: 14px; }
+
+.gallery-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 7px;
+}
+.gallery-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+    cursor: pointer;
+    transition: background 0.25s;
+}
+.gallery-dot.active { background: #fff; }
+
+/* ──────────────────────────────────────────────────────
+   CARD CHI TIẾT
+   ────────────────────────────────────────────────────── */
+.detail-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 20px;
+}
+
+/* Badge loại bài */
+.detail-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.detail-badge.room_for_rent { background: #e3f2fd; color: #1565c0; }
+.detail-badge.find_roommate  { background: #e8f5e9; color: #2e7d32; }
+.detail-badge.find_room      { background: #fff3e0; color: #e65100; }
+
+/* Tiêu đề bài đăng */
+.detail-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+/* Ngày đăng */
+.detail-date {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 18px;
+}
+
+/* Lưới thông tin (giá, diện tích, địa chỉ…) */
+.detail-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.info-chip {
+    background: #f5f7fa;
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.info-chip .chip-label {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.info-chip .chip-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+.info-chip .chip-value.price { color: #d32f2f; }
+
+/* Nội dung mô tả */
+.detail-content-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+}
+.detail-content-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.75;
+    white-space: pre-wrap;
+}
+
+/* ──────────────────────────────────────────────────────
+   SIDEBAR TÁC GIẢ & NÚT LIÊN HỆ
+   ────────────────────────────────────────────────────── */
+.detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 20px;
+    align-items: start;
+}
+
+.detail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.author-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    text-align: center;
+}
+
+.author-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e8f0fe;
+    margin-bottom: 10px;
+}
+
+.author-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+.author-phone {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* Nút liên hệ */
+.btn-contact {
+    width: 100%;
+    padding: 12px 0;
+    background: linear-gradient(135deg, #1565c0, #0288d1);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    letter-spacing: 0.3px;
+}
+.btn-contact:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+}
+.btn-contact:active { transform: translateY(0); }
+
+/* ──────────────────────────────────────────────────────
+   BÌNH LUẬN
+   ────────────────────────────────────────────────────── */
+.comments-section {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-top: 24px;
+}
+
+.comments-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.comments-count {
+    background: #e8f0fe;
+    color: #1565c0;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 2px 9px;
+}
+
+/* Form nhập bình luận */
+.comment-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+}
+.comment-form-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #e8f0fe;
+}
+.comment-input-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.comment-textarea {
+    width: 100%;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 70px;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    color: #333;
+}
+.comment-textarea:focus {
+    outline: none;
+    border-color: #1565c0;
+}
+.btn-comment-submit {
+    align-self: flex-end;
+    padding: 9px 22px;
+    background: #1565c0;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-comment-submit:hover { background: #0d47a1; }
+
+/* Divider */
+.comments-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin-bottom: 20px;
+}
+
+/* Danh sách comment */
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.comment-item {
+    display: flex;
+    gap: 12px;
+    animation: fadeInUp 0.3s ease;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.comment-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #e8f0fe;
+}
+
+.comment-body {
+    flex: 1;
+}
+.comment-bubble {
+    background: #f5f7fa;
+    border-radius: 0 10px 10px 10px;
+    padding: 10px 14px;
+    display: inline-block;
+    max-width: 100%;
+}
+.comment-author {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+.comment-text {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    word-break: break-word;
+}
+.comment-time {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 5px;
+    padding-left: 2px;
+}
+
+.comments-empty {
+    text-align: center;
+    color: #bbb;
+    font-size: 14px;
+    padding: 20px 0;
+}
+
+/* ──────────────────────────────────────────────────────
+   RESPONSIVE
+   ────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+    .detail-layout {
+        grid-template-columns: 1fr;
+    }
+    .gallery-main {
+        height: 240px;
+    }
+    .detail-card {
+        padding: 20px 18px;
+    }
+    .comments-section {
+        padding: 20px 18px;
+    }
+}

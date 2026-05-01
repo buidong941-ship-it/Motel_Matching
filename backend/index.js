@@ -10,13 +10,15 @@ app.use(cors());
 app.use(express.json());
 
 // ===== MOUNT ROUTES =====
-const authRoutes = require('./routes/auth');
-const notificationRoutes = require('./routes/notification');
-const messageRoutes = require('./routes/message');
+const authRoutes         = require('./routes/auth');
+const notificationRoutes  = require('./routes/notification');
+const messageRoutes       = require('./routes/message');
+const postsDetailRoutes   = require('./routes/posts_detail');
 
 app.use('/api', authRoutes);                        // /api/login, /api/register
 app.use('/api/notifications', notificationRoutes);  // /api/notifications/...
 app.use('/api', messageRoutes);                     // /api/conversations, /api/messages
+app.use('/api', postsDetailRoutes);                 // /api/posts/:id, /api/posts/:id/images, /api/posts/:id/comments
 // ===== KHỞI ĐỘNG SERVER =====
 app.listen(port, () => {
     console.log(`Server Node.js đang chạy tại http://127.0.0.1:${port}`);
