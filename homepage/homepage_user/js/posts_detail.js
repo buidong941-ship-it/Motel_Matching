@@ -2,6 +2,52 @@
 
 const API_BASE = "http://127.0.0.1:3000";
 
+// ─── MOCK DATA (dùng để xem trước giao diện khi server chưa chạy) ─────────────
+const MOCK_POST = {
+    id: 1,
+    post_type: "room_for_rent",
+    title: "Phòng trọ cao cấp gần ĐH Khoa Học Tự Nhiên, full nội thất",
+    content: "Phòng rộng rãi, thoáng mát, có ban công. Full nội thất: giường, tủ, bàn học, máy lạnh, nóng lạnh. Khu vực an ninh, gần chợ, siêu thị, trường học. Cho phép nấu ăn. Giờ giấc tự do.",
+    price: 3500000,
+    area: 25,
+    address: "144 Trần Phú, Phường 4",
+    district: "Quận 5",
+    city: "TP.HCM",
+    is_available: true,
+    created_at: new Date().toISOString(),
+    fullname: "Trần Văn Cảnh",
+    phone: "0901234567",
+    avatar: "https://i.pravatar.cc/64?img=12",
+    user_id: 2
+};
+
+const MOCK_IMAGES = [
+    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=960&h=420&fit=crop",
+    "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=960&h=420&fit=crop",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=960&h=420&fit=crop"
+];
+
+const MOCK_COMMENTS = [
+    {
+        fullname: "Nguyễn Văn A",
+        avatar: "https://i.pravatar.cc/38?img=5",
+        content: "Phòng còn trống không anh ơi? Em đang tìm gấp!",
+        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+    },
+    {
+        fullname: "Lê Thị B",
+        avatar: "https://i.pravatar.cc/38?img=9",
+        content: "Khu vực có an ninh không ạ? Cho em hỏi thêm ạ.",
+        created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+    },
+    {
+        fullname: "Phạm Minh Tuấn",
+        avatar: "https://i.pravatar.cc/38?img=15",
+        content: "Phòng đẹp quá, giá hợp lý. Mình đặt cọc được không?",
+        created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+    }
+];
+
 // ─── Trạng thái gallery ───────────────────────────────────────────────────────
 let galleryImages = [];
 let currentImageIndex = 0;
@@ -12,7 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const postId = params.get("id");
 
     if (!postId) {
-        showError("Không tìm thấy ID bài đăng.");
+        // Không có ID → dùng mock data để xem trước giao diện (Preview Mode)
+        console.warn("[Preview Mode] Không có ?id= trên URL, hiển thị mock data để xem giao diện.");
+        renderPostDetail(MOCK_POST);
+        galleryImages = MOCK_IMAGES;
+        renderGallery();
+        renderComments(MOCK_COMMENTS);
         return;
     }
 
@@ -32,8 +83,9 @@ async function loadPostDetail(postId) {
         const post = await res.json();
         renderPostDetail(post);
     } catch (err) {
-        console.error("Lỗi tải chi tiết bài đăng:", err);
-        showError("Không thể tải bài đăng. Vui lòng thử lại sau.");
+        // Fallback mock data khi chưa có server (giống loadConversations trong message.js)
+        console.warn("[Preview Mode] Dùng mock data cho bài đăng:", err.message);
+        renderPostDetail(MOCK_POST);
     }
 }
 
@@ -105,6 +157,7 @@ function renderPostDetail(post) {
 async function loadImages(postId) {
     try {
         const res = await fetch(`${API_BASE}/api/posts/${postId}/images`);
+        if (!res.ok) throw new Error("API error");
         const images = await res.json();
 
         galleryImages = images.length > 0
@@ -113,8 +166,9 @@ async function loadImages(postId) {
 
         renderGallery();
     } catch (err) {
-        console.error("Lỗi tải ảnh:", err);
-        galleryImages = ["https://via.placeholder.com/960x420?text=Không+có+ảnh"];
+        // Fallback mock images khi chưa có server
+        console.warn("[Preview Mode] Dùng mock images:", err.message);
+        galleryImages = MOCK_IMAGES;
         renderGallery();
     }
 }
@@ -161,10 +215,13 @@ function nextSlide() { goToSlide(currentImageIndex + 1); }
 async function loadComments(postId) {
     try {
         const res = await fetch(`${API_BASE}/api/posts/${postId}/comments`);
+        if (!res.ok) throw new Error("API error");
         const comments = await res.json();
         renderComments(comments);
     } catch (err) {
-        console.error("Lỗi tải bình luận:", err);
+        // Fallback mock comments khi chưa có server
+        console.warn("[Preview Mode] Dùng mock comments:", err.message);
+        renderComments(MOCK_COMMENTS);
     }
 }
 
